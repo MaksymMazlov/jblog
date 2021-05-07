@@ -22,7 +22,7 @@ public class MainPageController
     private CategoryService categoryService;
 
     @GetMapping("/")
-    public String getPosts(@RequestParam(required = false, defaultValue = "0") int page, Model model, Principal principal)
+    public String getPosts(@RequestParam(required = false, defaultValue = "1") int page, Model model, Principal principal)
     {
         List<Category> categories = categoryService.getAll();
         List<PostDto> posts = postService.getForPage(page);

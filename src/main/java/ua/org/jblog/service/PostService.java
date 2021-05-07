@@ -79,7 +79,7 @@ public class PostService
 
     public List<PostDto> getForPage(int page)
     {
-        PageRequest pageRequest = PageRequest.of(page, 5);
+        PageRequest pageRequest = PageRequest.of(page-1, 5);
         List<Post> postList = postRepository.findAllByOrderByIdDesc(pageRequest);
         List<PostDto> listPostDto = new ArrayList<>();
         for (Post post : postList)
