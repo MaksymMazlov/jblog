@@ -83,16 +83,4 @@ public class PostController
         postService.sentenceLike(postDto);
         return "redirect:/post/{id}";
     }
-
-    /*@GetMapping("/post/img/{fileName}")
-    public ResponseEntity<byte[]> getImg(@PathVariable String fileName)
-    {
-        byte[] file = postService.getFile(fileName);
-        return ResponseEntity
-                .ok()
-                .contentLength(file.length)
-                .contentType(MediaType.IMAGE_JPEG)
-                .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS))
-                .body(file);
-    }*/
 }

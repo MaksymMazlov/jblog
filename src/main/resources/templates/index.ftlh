@@ -26,7 +26,7 @@
             </#list>
             <!-- Pagination -->
             <ul class="pagination pagination-sm">
-                <#list 0..pages as n>
+                <#list 1..pages as n>
                         <#if n==page>
                             <li class="page-item active"><a class="page-link" href="/?page=${n}">${n}</a></li>
                         <#else>
