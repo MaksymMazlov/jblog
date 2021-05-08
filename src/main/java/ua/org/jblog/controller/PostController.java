@@ -69,14 +69,18 @@ public class PostController
     }
 
     @GetMapping("/post/{id}")
-    public String getFullPost(Model model, @PathVariable int id)
+    public String getFullPost(Model model, @PathVariable int id, Principal principal)
     {
         PostDto post = postService.getPost(id);
         model.addAttribute("post", post);
+
         List<Category> categories = categoryService.getAll();
         model.addAttribute("categoriesToHTML", categories);
+
         List<CommentDto> commentList = postService.getAllComment(id);
         model.addAttribute("comments_list", commentList);
+
+        model.addAttribute("principal", principal);
         return "fullpost";
     }
 
@@ -99,5 +103,12 @@ public class PostController
         {
             return "redirect:/post/{id}";
         }
+    }
+
+    @GetMapping("/post/{postId}/comments/{commentId}")
+    public String deleteComment(@PathVariable("commentId") int commentId)
+    {
+        postService.delComment(commentId);
+        return "redirect:/post/{postId}";
     }
 }

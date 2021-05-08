@@ -189,4 +189,16 @@ public class PostService
         }
         return allComments;
     }
+
+    public void delComment(int commentId)
+    {
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+        if (comment.getUserId() == userService.currentUser().getId())
+        {
+            commentRepository.deleteById(commentId);
+            LOGGER.info("In delComment: delete comment: ID {}", commentId);
+        } else {
+            LOGGER.error("In delComment: delete comment is impossible!");
+        }
+    }
 }
