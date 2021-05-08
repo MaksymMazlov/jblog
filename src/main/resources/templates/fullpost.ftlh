@@ -40,9 +40,17 @@
             <#list comments_list as comment>
                 <div class="card mb-4">
                     <div class="card-body text-muted">
-                        <small>Оставил: <b>${comment.authorComment}</b>
-                            ${comment.created}
-                        </small>
+                        <div>
+                            <small>Оставил: <b>${comment.authorComment}</b>
+                                ${comment.created}
+                                <#if principal.name==comment.authorComment>
+                                    <span class="float-right">
+                                    <a title="Удалить комментарий"
+                                       href="/post/${post.id?c}/comments/${comment.id}">Х</a>
+                                     </span>
+                                </#if>
+                            </small>
+                        </div>
                         <p class="card-text lead">~${comment.comment}</p>
                     </div>
                 </div>
