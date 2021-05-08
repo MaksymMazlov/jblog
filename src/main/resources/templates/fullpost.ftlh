@@ -13,7 +13,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h2 class="card-title">${post.title}</h2>
-                    <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+                    <img class="card-img-top" src="${post.img?no_esc}" alt="Card image cap">
                     <p class="card-text">${post.fullText?no_esc}</p>
                 </div>
                 <div class="card-footer text-muted">
@@ -27,17 +27,26 @@
                         <button name="likes" value="-1" type="submit">-</button>
                     </form>
                 </div>
+                <div class="card-body">
+                    <form action="/post/${post.id?c}/comments" method="post">
+                        <input class="form-control" name="comment" placeholder="Добавить мнение к посту...">
+                        <br>
+                        <button class="btn btn-success" type="submit">Добавить комменатрий</button>
+                    </form>
+                </div>
             </div>
-            <!-- Pagination -->
-            <ul class="pagination justify-content-center mb-4">
-                <li class="page-item">
-                    <a class="page-link" href="#">&larr; Older</a>
-                </li>
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">Newer &rarr;</a>
-                </li>
-            </ul>
 
+            <!-- Comments  -->
+            <#list comments_list as comment>
+                <div class="card mb-4">
+                    <div class="card-body text-muted">
+                        <small>Оставил: <b>${comment.authorComment}</b>
+                            ${comment.created}
+                        </small>
+                        <p class="card-text lead">~${comment.comment}</p>
+                    </div>
+                </div>
+            </#list>
         </div>
 
         <!-- Sidebar Widgets Column -->

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ua.org.jblog.Exception.EmptyOrNullFieldException;
 import ua.org.jblog.domain.Category;
+import ua.org.jblog.domain.Comment;
 import ua.org.jblog.domain.User;
 import ua.org.jblog.dto.CreatePostDto;
 import ua.org.jblog.dto.PostDto;
@@ -58,7 +59,7 @@ public class PostController
         }
         catch (EmptyOrNullFieldException | IOException e)
         {
-            LOG.error(e.getMessage(),e);
+            LOG.error(e.getMessage(), e);
             List<Category> categories = categoryService.getAll();
             model.addAttribute("categoriesToHTML", categories);
             model.addAttribute("null_error", e.getMessage());
@@ -74,6 +75,8 @@ public class PostController
         model.addAttribute("post", post);
         List<Category> categories = categoryService.getAll();
         model.addAttribute("categoriesToHTML", categories);
+        List<Comment> commentList = postService.getAllComment(id);
+        model.addAttribute("comments_list", commentList);
         return "fullpost";
     }
 
@@ -82,5 +85,19 @@ public class PostController
     {
         postService.sentenceLike(postDto);
         return "redirect:/post/{id}";
+    }
+
+    @PostMapping("/post/{id}/comments")
+    public String createComment(@PathVariable("id") int idPost, String comment)
+    {
+        try
+        {
+            postService.createComment(comment, idPost);
+            return "redirect:/post/{id}";
+        }
+        catch (EmptyOrNullFieldException e)
+        {
+            return "redirect:/post/{id}";
+        }
     }
 }
