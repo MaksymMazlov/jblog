@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ua.org.jblog.Exception.EmptyOrNullFieldException;
+import ua.org.jblog.domain.Comment;
 import ua.org.jblog.domain.Post;
+import ua.org.jblog.dto.CommentDto;
 import ua.org.jblog.dto.CreatePostDto;
 import ua.org.jblog.dto.PostDto;
 import ua.org.jblog.repository.CategoryRepository;
+import ua.org.jblog.repository.CommentRepository;
 import ua.org.jblog.repository.PostRepository;
 
 import java.time.LocalDateTime;
@@ -31,6 +34,8 @@ public class PostService
     private CategoryRepository categoryRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CommentRepository commentRepository;
 
     public void createPost(int userId, CreatePostDto newPost, byte[] bytes, String fileName)
     {
@@ -62,7 +67,7 @@ public class PostService
     private String saveFoto(byte[] bytes, String fileName, Post post)
     {
         String uuid = UUID.randomUUID() + fileName;
-        return  Backendless.Files.saveFile("/upload/img", uuid, bytes);
+        return Backendless.Files.saveFile("/upload/img", uuid, bytes);
     }
 
     public List<PostDto> getAll()
@@ -79,7 +84,7 @@ public class PostService
 
     public List<PostDto> getForPage(int page)
     {
-        PageRequest pageRequest = PageRequest.of(page-1, 5);
+        PageRequest pageRequest = PageRequest.of(page - 1, 5);
         List<Post> postList = postRepository.findAllByOrderByIdDesc(pageRequest);
         List<PostDto> listPostDto = new ArrayList<>();
         for (Post post : postList)
@@ -131,34 +136,7 @@ public class PostService
         Post post = postRepository.findById(postDto.getId());
         post.setLikes(post.getLikes() + postDto.getLikes());
         postRepository.save(post);
-
     }
-
-
-  /*  public byte[] getFile(String fileName)
-    {
-        try
-        {
-            String direct = "D:\\JblogStorage\\";
-
-            Path path = Paths.get(direct, fileName);
-            if (!Files.exists(path))
-            {
-                throw new FileNotFoundException("File not found");
-            }
-            return Files.readAllBytes(path);
-
-        }
-        catch (IOException e)
-        {
-            LOGGER.error("Can not read file: {}", fileName, e);
-            throw new FileNotFoundException("Can not read file", e);
-        }
-
-    }
-    */
-
-
 
 
     public List<PostDto> getAllBySearch(String searchName)
@@ -177,5 +155,38 @@ public class PostService
             listPostDto.add(postDto);
         }
         return listPostDto;
+    }
+
+    public void createComment(String comment, int idPost)
+    {
+        if (StringUtils.isBlank(comment))
+        {
+            throw new EmptyOrNullFieldException("Комментарий не может быть пустым");
+        }
+
+        Comment newComment = new Comment();
+        newComment.setComment(comment);
+        newComment.setPostId(idPost);
+        newComment.setCreated(LocalDateTime.now());
+        newComment.setUserId(userService.currentUser().getId());
+        commentRepository.save(newComment);
+        LOGGER.info("In createComment: created comment: {}", comment);
+    }
+
+    public List<CommentDto> getAllComment(int idPost)
+    {
+        List<Comment> commentListFromDB = commentRepository.findAllByPostIdOrderByCreatedDesc(idPost);
+        List<CommentDto> allComments = new ArrayList<>();
+        for (Comment comment : commentListFromDB)
+        {
+            CommentDto commentDto = new CommentDto();
+            commentDto.setId(comment.getId());
+            commentDto.setAuthorComment(comment.getUser().getName());
+            commentDto.setComment(comment.getComment());
+            commentDto.setCreated(comment.getCreated().format(DATE_TIME_FORMATTER));
+            commentDto.setPostId(comment.getPostId());
+            allComments.add(commentDto);
+        }
+        return allComments;
     }
 }
