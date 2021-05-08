@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ua.org.jblog.Exception.EmptyOrNullFieldException;
 import ua.org.jblog.domain.Category;
-import ua.org.jblog.domain.Comment;
 import ua.org.jblog.domain.User;
+import ua.org.jblog.dto.CommentDto;
 import ua.org.jblog.dto.CreatePostDto;
 import ua.org.jblog.dto.PostDto;
 import ua.org.jblog.service.CategoryService;
@@ -75,7 +75,7 @@ public class PostController
         model.addAttribute("post", post);
         List<Category> categories = categoryService.getAll();
         model.addAttribute("categoriesToHTML", categories);
-        List<Comment> commentList = postService.getAllComment(id);
+        List<CommentDto> commentList = postService.getAllComment(id);
         model.addAttribute("comments_list", commentList);
         return "fullpost";
     }

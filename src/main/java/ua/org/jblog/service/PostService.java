@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import ua.org.jblog.Exception.EmptyOrNullFieldException;
 import ua.org.jblog.domain.Comment;
 import ua.org.jblog.domain.Post;
+import ua.org.jblog.dto.CommentDto;
 import ua.org.jblog.dto.CreatePostDto;
 import ua.org.jblog.dto.PostDto;
 import ua.org.jblog.repository.CategoryRepository;
@@ -166,14 +167,26 @@ public class PostService
         Comment newComment = new Comment();
         newComment.setComment(comment);
         newComment.setPostId(idPost);
-        newComment.setCreated(LocalDateTime.now().format(DATE_TIME_FORMATTER));
-        newComment.setAuthorComment(userService.currentUser().getName());
+        newComment.setCreated(LocalDateTime.now());
+        newComment.setUserId(userService.currentUser().getId());
         commentRepository.save(newComment);
         LOGGER.info("In createComment: created comment: {}", comment);
     }
 
-    public List<Comment> getAllComment(int idPost )
+    public List<CommentDto> getAllComment(int idPost)
     {
-        return commentRepository.findAllByPostIdOrderByCreatedDesc(idPost);
+        List<Comment> commentListFromDB = commentRepository.findAllByPostIdOrderByCreatedDesc(idPost);
+        List<CommentDto> allComments = new ArrayList<>();
+        for (Comment comment : commentListFromDB)
+        {
+            CommentDto commentDto = new CommentDto();
+            commentDto.setId(comment.getId());
+            commentDto.setAuthorComment(comment.getUser().getName());
+            commentDto.setComment(comment.getComment());
+            commentDto.setCreated(comment.getCreated().format(DATE_TIME_FORMATTER));
+            commentDto.setPostId(comment.getPostId());
+            allComments.add(commentDto);
+        }
+        return allComments;
     }
 }

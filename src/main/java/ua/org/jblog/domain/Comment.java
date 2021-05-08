@@ -3,6 +3,9 @@ package ua.org.jblog.domain;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
 @Entity
 public class Comment
@@ -12,8 +15,11 @@ public class Comment
     private int id;
     private String comment;
     private int postId;
-    private String authorComment;
-    private String created;
+    private int userId;
+    @ManyToOne
+    @JoinColumn(name = "userId", referencedColumnName = "id", insertable = false, updatable = false)
+    private User user;
+    private LocalDateTime created;
 
     public int getId()
     {
@@ -45,23 +51,33 @@ public class Comment
         this.postId = postId;
     }
 
-    public String getCreated()
+    public LocalDateTime getCreated()
     {
         return created;
     }
 
-    public void setCreated(String created)
+    public void setCreated(LocalDateTime created)
     {
         this.created = created;
     }
 
-    public String getAuthorComment()
+    public int getUserId()
     {
-        return authorComment;
+        return userId;
     }
 
-    public void setAuthorComment(String authorComment)
+    public void setUserId(int userId)
     {
-        this.authorComment = authorComment;
+        this.userId = userId;
+    }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
     }
 }
