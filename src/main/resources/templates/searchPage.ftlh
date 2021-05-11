@@ -6,7 +6,7 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
             <#if searchCat??>
-                <h1 class="my-4"><small>Вы искали: <b>${searchCat}</b></small></h1>
+                <h1 class="my-4"><small>Категория: <b>${searchCat}</b></small></h1>
             <#else>
                 <h1 class="my-4"><small>Вы искали: <b>${searchName}</b></small></h1>
             </#if>

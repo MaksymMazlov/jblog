@@ -113,7 +113,9 @@ public class PostController
     }
 
     @PostMapping("/post/{postId}/comments/{commentId}/edit")
-    public String editComment(@PathVariable("commentId") int commentId, @PathVariable("postId") int postId,String comment)
+    public String editComment(@PathVariable("commentId") int commentId,
+                              @PathVariable("postId") int postId,
+                              String comment)
     {
         try
         {

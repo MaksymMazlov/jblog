@@ -47,10 +47,10 @@
                                         <a title="Удалить комментарий"
                                            href="/post/${post.id?c}/comments/${comment.id}"><small style="color: #a71d2a">Удалить</small></a>
 
-                                          <a title="Править комментарий" style="color: #28a745" data-toggle="collapse" href="#edit"  role="button" aria-expanded="false" aria-controls="collapseExample">Править</a>
+                                          <a title="Править комментарий" style="color: #28a745" data-toggle="collapse" href="#edit-${comment.id}"  role="button" aria-expanded="false" aria-controls="collapseExample">Править</a>
                                          </span>
 
-                                        <div class="collapse" id="edit">
+                                        <div class="collapse" id="edit-${comment.id}">
                                             <div class="card card-body">
                                                 <form action="/post/${post.id?c}/comments/${comment.id}/edit" method="post">
                                                     <input class="form-control" name="comment" placeholder="${comment.comment}">

@@ -6,7 +6,7 @@
                 <ul class="list-unstyled mb-0">
                     <#list categoriesToHTML as cat>
                         <li>
-                            <a href="/search/category/${cat.id}">${cat.name}</a>
+                            <a href="/category/${cat.id}">${cat.name}</a>
                         </li>
                     </#list>
                 </ul>

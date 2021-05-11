@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ua.org.jblog.Exception.EmptyOrNullFieldException;
+import ua.org.jblog.Exception.NullException;
 import ua.org.jblog.domain.Comment;
 import ua.org.jblog.domain.Post;
 import ua.org.jblog.dto.CommentDto;
@@ -207,18 +208,15 @@ public class PostService
     public void updateComment(String comment, int commentId)
 
     {
-        Comment oldComment = commentRepository.findById(commentId).orElse(null);
-        Comment newComment = new Comment();
+        Comment oldComment = commentRepository.findById(commentId).orElseThrow(() -> new NullException("Комментарий не существует"));
         if (oldComment.getUserId() == userService.currentUser().getId())
         {
-            newComment.setComment(comment);
-            newComment.setPostId(oldComment.getPostId());
-            newComment.setCreated(oldComment.getCreated());
-            newComment.setId(oldComment.getId());
-            newComment.setUserId(oldComment.getUserId());
-            commentRepository.save(newComment);
+            oldComment.setComment(comment);
+            commentRepository.save(oldComment);
             LOGGER.info("In updateComment: update comment:  {}", comment);
-        } else {
+        }
+        else
+        {
             LOGGER.error("In updateComment: update comment is impossible!");
         }
     }
