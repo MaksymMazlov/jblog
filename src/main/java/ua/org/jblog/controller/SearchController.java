@@ -41,4 +41,5 @@ public class SearchController
         model.addAttribute("searchCat", categoryService.categoryNameById(catId));
         return "searchPage";
     }
+
 }
