@@ -5,15 +5,20 @@
 
         <!-- Blog Entries Column -->
         <div class="col-md-8">
-            <h1 class="my-4"><small>Новости по слову: <b>${searchName}</b></small></h1>
+            <#if searchCat??>
+                <h1 class="my-4"><small>Вы искали: <b>${searchCat}</b></small></h1>
+            <#else>
+                <h1 class="my-4"><small>Вы искали: <b>${searchName}</b></small></h1>
+            </#if>
 
-            <#if null_error??><div class="alert alert-danger">${null_error}</div></#if>
+            <#if null_error??>
+                <div class="alert alert-danger">${null_error}</div></#if>
             <#list search_posts_list as post>
                 <!-- Blog Post -->
                 <div class="card mb-4">
                     <div class="card-body">
                         <h2 class="card-title">${post.title}</h2>
-                        <img class="card-img-top" src="/post/img/${post.img}" alt="Card image cap">
+                        <img class="card-img-top" src="${post.img?no_esc}" alt="Card image cap">
                         <p class="card-text">${post.shortText?no_esc}</p>
                         <a href="/post/${post.id}" class="btn btn-primary">Read More &rarr;</a>
                     </div>
