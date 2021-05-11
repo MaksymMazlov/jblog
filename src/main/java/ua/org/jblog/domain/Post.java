@@ -16,7 +16,7 @@ public class Post
     private int id;
     @Column(unique = true)
     private String title;
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "text")
     private String fullText;
     private String shortText;
     private String tag;
@@ -31,7 +31,6 @@ public class Post
     @JoinColumn(name = "userId", referencedColumnName = "id", insertable = false, updatable = false)
     private User user;
     private Integer userId;
-    @Column(columnDefinition = "LONGBLOB")
     private String img;
 
     public int getId()
