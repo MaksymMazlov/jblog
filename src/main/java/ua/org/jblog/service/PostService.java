@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ua.org.jblog.Exception.EmptyOrNullFieldException;
+import ua.org.jblog.Exception.NullException;
 import ua.org.jblog.domain.Comment;
 import ua.org.jblog.domain.Post;
 import ua.org.jblog.dto.CommentDto;
@@ -197,10 +198,29 @@ public class PostService
         {
             commentRepository.deleteById(commentId);
             LOGGER.info("In delComment: delete comment: ID {}", commentId);
-        } else {
+        }
+        else
+        {
             LOGGER.error("In delComment: delete comment is impossible!");
         }
     }
+
+    public void updateComment(String comment, int commentId)
+
+    {
+        Comment oldComment = commentRepository.findById(commentId).orElseThrow(() -> new NullException("Комментарий не существует"));
+        if (oldComment.getUserId() == userService.currentUser().getId())
+        {
+            oldComment.setComment(comment);
+            commentRepository.save(oldComment);
+            LOGGER.info("In updateComment: update comment:  {}", comment);
+        }
+        else
+        {
+            LOGGER.error("In updateComment: update comment is impossible!");
+        }
+    }
+
 
     public List<PostDto> getAllByCategoryId(int catId)
     {

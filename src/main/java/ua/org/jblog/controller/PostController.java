@@ -111,4 +111,20 @@ public class PostController
         postService.delComment(commentId);
         return "redirect:/post/{postId}";
     }
+
+    @PostMapping("/post/{postId}/comments/{commentId}/edit")
+    public String editComment(@PathVariable("commentId") int commentId,
+                              @PathVariable("postId") int postId,
+                              String comment)
+    {
+        try
+        {
+            postService.updateComment(comment, commentId);
+            return "redirect:/post/{postId}";
+        }
+        catch (EmptyOrNullFieldException e)
+        {
+            return "redirect:/post/{postId}";
+        }
+    }
 }
