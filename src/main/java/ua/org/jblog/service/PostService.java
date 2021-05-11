@@ -201,4 +201,16 @@ public class PostService
             LOGGER.error("In delComment: delete comment is impossible!");
         }
     }
+
+    public List<PostDto> getAllByCategoryId(int catId)
+    {
+        List<Post> postList = postRepository.findAllByCategoryId(catId);
+        List<PostDto> listPostDto = new ArrayList<>();
+        for (Post post : postList)
+        {
+            PostDto postDto = convertToDto(post);
+            listPostDto.add(postDto);
+        }
+        return listPostDto;
+    }
 }
