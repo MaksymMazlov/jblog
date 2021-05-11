@@ -197,8 +197,30 @@ public class PostService
         {
             commentRepository.deleteById(commentId);
             LOGGER.info("In delComment: delete comment: ID {}", commentId);
-        } else {
+        }
+        else
+        {
             LOGGER.error("In delComment: delete comment is impossible!");
         }
     }
+
+    public void updateComment(String comment, int commentId)
+
+    {
+        Comment oldComment = commentRepository.findById(commentId).orElse(null);
+        Comment newComment = new Comment();
+        if (oldComment.getUserId() == userService.currentUser().getId())
+        {
+            newComment.setComment(comment);
+            newComment.setPostId(oldComment.getPostId());
+            newComment.setCreated(oldComment.getCreated());
+            newComment.setId(oldComment.getId());
+            newComment.setUserId(oldComment.getUserId());
+            commentRepository.save(newComment);
+            LOGGER.info("In updateComment: update comment:  {}", comment);
+        } else {
+            LOGGER.error("In updateComment: update comment is impossible!");
+        }
+    }
+
 }
