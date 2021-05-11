@@ -9,21 +9,24 @@ image: maven:3.6.3
 
 pipelines:
   default:
-    - step:
-        name: Build and Test
-        caches:
-          - maven
-        script:
-          - mvn -B verify --file pom.xml
-        after-script:
-            # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
-          - pipe: atlassian/checkstyle-report:0.2.0
-    - step:
-        name: Security Scan
-        script:
-          # Run a security scan for sensitive data.
-          # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
-          - pipe: atlassian/git-secrets-scan:0.4.3
+    - parallel:
+      - step:
+          name: Build and Test
+          caches:
+            - maven
+          script:
+            - mvn -B verify --file pom.xml
+          artifacts:
+            - target/*.jar
+          after-script:
+              # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
+            - pipe: atlassian/checkstyle-report:0.2.0
+      - step:
+          name: Security Scan
+          script:
+            # Run a security scan for sensitive data.
+            # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
+            - pipe: atlassian/git-secrets-scan:0.4.3
     - step:
         name: Deploy to test
         deployment: test
@@ -34,4 +37,4 @@ pipelines:
             variables:
               HEROKU_API_KEY: 'fc13e022-2913-423b-9270-2a4585778cbd'
               HEROKU_APP_NAME: 'jboardua'
-              ZIP_FILE: 'build/target/jblog-0.0.1-SNAPSHOT.jar'
+              ZIP_FILE: 'jblog-0.0.1-SNAPSHOT.jar'
