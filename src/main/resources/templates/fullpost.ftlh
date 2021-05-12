@@ -22,10 +22,13 @@
                     Views: ${post.views?c} |
                     Likes: ${post.likes?c} |
                     Author: ${post.author}
-                    <form action="/post/${post.id?c}" method="post">
-                        <button name="likes" value="1" type="submit">+</button>
-                        <button name="likes" value="-1" type="submit">-</button>
-                    </form>
+                    <#if isLike>
+                    <#else>
+                        <form action="/post/${post.id?c}" method="post">
+                            <button name="likes" value="1" type="submit">+</button>
+                            <button name="likes" value="-1" type="submit">-</button>
+                        </form>
+                    </#if>
                 </div>
                 <div class="card-body">
                     <form action="/post/${post.id?c}/comments" method="post">
@@ -40,26 +43,29 @@
             <#list comments_list as comment>
                 <div class="card mb-4">
                     <div class="card-body text-muted">
-                            <small>Оставил: <b>${comment.authorComment}</b>
-                                ${comment.created}
-                                <#if principal.name==comment.authorComment>
-                                        <span class="float-right">
+                        <small>Оставил: <b>${comment.authorComment}</b>
+                            ${comment.created}
+                            <#if principal.name==comment.authorComment>
+                                <span class="float-right">
                                         <a title="Удалить комментарий"
-                                           href="/post/${post.id?c}/comments/${comment.id}"><small style="color: #a71d2a">Удалить</small></a>
+                                           href="/post/${post.id?c}/comments/${comment.id}"><small
+                                                    style="color: #a71d2a">Удалить</small></a>
 
-                                          <a title="Править комментарий" style="color: #28a745" data-toggle="collapse" href="#edit-${comment.id}"  role="button" aria-expanded="false" aria-controls="collapseExample">Править</a>
+                                          <a title="Править комментарий" style="color: #28a745" data-toggle="collapse"
+                                             href="#edit-${comment.id}" role="button" aria-expanded="false"
+                                             aria-controls="collapseExample">Править</a>
                                          </span>
 
-                                        <div class="collapse" id="edit-${comment.id}">
-                                            <div class="card card-body">
-                                                <form action="/post/${post.id?c}/comments/${comment.id}/edit" method="post">
-                                                    <input class="form-control" name="comment" placeholder="${comment.comment}">
-                                                    <button class="btn btn-success" type="submit">Изменить</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                </#if>
-                            </small>
+                                <div class="collapse" id="edit-${comment.id}">
+                                    <div class="card card-body">
+                                        <form action="/post/${post.id?c}/comments/${comment.id}/edit" method="post">
+                                            <input class="form-control" name="comment" placeholder="${comment.comment}">
+                                            <button class="btn btn-success" type="submit">Изменить</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </#if>
+                        </small>
 
                         <p class="card-text lead">~${comment.comment}</p>
                     </div>

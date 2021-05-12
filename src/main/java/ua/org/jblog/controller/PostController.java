@@ -80,6 +80,7 @@ public class PostController
         List<CommentDto> commentList = postService.getAllComment(id);
         model.addAttribute("comments_list", commentList);
 
+        model.addAttribute("isLike", postService.likeExist(id));
         model.addAttribute("principal", principal);
         return "fullpost";
     }

@@ -11,12 +11,14 @@ import ua.org.jblog.Exception.EmptyOrNullFieldException;
 import ua.org.jblog.Exception.NullException;
 import ua.org.jblog.domain.Comment;
 import ua.org.jblog.domain.Post;
+import ua.org.jblog.domain.UserLike;
+import ua.org.jblog.domain.UserLikePK;
 import ua.org.jblog.dto.CommentDto;
 import ua.org.jblog.dto.CreatePostDto;
 import ua.org.jblog.dto.PostDto;
-import ua.org.jblog.repository.CategoryRepository;
 import ua.org.jblog.repository.CommentRepository;
 import ua.org.jblog.repository.PostRepository;
+import ua.org.jblog.repository.UserLikeRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,11 +34,11 @@ public class PostService
     @Autowired
     private PostRepository postRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
     private UserService userService;
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private UserLikeRepository likeRepository;
 
     public void createPost(int userId, CreatePostDto newPost, byte[] bytes, String fileName)
     {
@@ -134,11 +136,27 @@ public class PostService
 
     public void sentenceLike(PostDto postDto)
     {
+        UserLikePK likePK = new UserLikePK(postDto.getId(), userService.currentUser().getId());
+        if (likeRepository.existsById(likePK))
+        {
+            return;
+        }
+
         Post post = postRepository.findById(postDto.getId());
         post.setLikes(post.getLikes() + postDto.getLikes());
         postRepository.save(post);
+
+        UserLike like = new UserLike();
+        like.setId(likePK);
+        like.setCreated(LocalDateTime.now());
+        likeRepository.save(like);
     }
 
+    public boolean likeExist(int idPost)
+    {
+        UserLikePK likePK = new UserLikePK(idPost, userService.currentUser().getId());
+        return likeRepository.existsById(likePK);
+    }
 
     public List<PostDto> getAllBySearch(String searchName)
     {
