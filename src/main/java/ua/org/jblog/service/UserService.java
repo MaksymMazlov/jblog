@@ -43,6 +43,10 @@ public class UserService
         }
 
         String authenticationName = authentication.getName();
+        if ("anonymousUser".equals(authenticationName))
+        {
+            return null;
+        }
         return userRepository.findByName(authenticationName);
     }
 }
