@@ -18,12 +18,16 @@ import ua.org.jblog.dto.CommentDto;
 import ua.org.jblog.dto.CreatePostDto;
 import ua.org.jblog.dto.PostDto;
 import ua.org.jblog.service.CategoryService;
+import ua.org.jblog.service.CommentService;
+import ua.org.jblog.service.LikeCommentService;
+import ua.org.jblog.service.LikePostService;
 import ua.org.jblog.service.PostService;
 import ua.org.jblog.service.UserService;
 
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class PostController
@@ -35,7 +39,12 @@ public class PostController
     private CategoryService categoryService;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private LikeCommentService likeCommentService;
+    @Autowired
+    private LikePostService likePostService;
     @GetMapping("/post")
     public String getPageCreateAddPost(Model model, Principal principal)
     {
@@ -77,19 +86,31 @@ public class PostController
         List<Category> categories = categoryService.getAll();
         model.addAttribute("categoriesToHTML", categories);
 
-        List<CommentDto> commentList = postService.getAllComment(id);
+        List<CommentDto> commentList = commentService.getAllComment(id);
         model.addAttribute("comments_list", commentList);
 
-        model.addAttribute("isLike", postService.likeExist(id));
+        model.addAttribute("isLike", likePostService.likeExist(id));
+        Set<Integer> likedCommentsByUser = likeCommentService.getLikedCommentsByUser(userService.currentUser().getId(), id);
+        model.addAttribute("likedComments", likedCommentsByUser);
         model.addAttribute("principal", principal);
         return "fullpost";
+
     }
 
     @PostMapping("/post/{id}")
     public String createLike(@ModelAttribute PostDto postDto)
     {
-        postService.sentenceLike(postDto);
+        likePostService.createLike(postDto);
         return "redirect:/post/{id}";
+    }
+
+    @PostMapping("/post/{postId}/comments/{commentId}")
+    public String createLikeCom(@PathVariable("commentId") int commentId,
+                                @PathVariable("postId") int postId,
+                                int likes)
+    {
+        likeCommentService.sentenceLikeCom(commentId, likes);
+        return "redirect:/post/{postId}";
     }
 
     @PostMapping("/post/{id}/comments")
@@ -97,7 +118,7 @@ public class PostController
     {
         try
         {
-            postService.createComment(comment, idPost);
+            commentService.createComment(comment, idPost);
             return "redirect:/post/{id}";
         }
         catch (EmptyOrNullFieldException e)
@@ -106,10 +127,10 @@ public class PostController
         }
     }
 
-    @GetMapping("/post/{postId}/comments/{commentId}")
+    @GetMapping("/post/{postId}/comments/{commentId}/del")
     public String deleteComment(@PathVariable("commentId") int commentId)
     {
-        postService.delComment(commentId);
+        commentService.delComment(commentId);
         return "redirect:/post/{postId}";
     }
 
@@ -120,7 +141,7 @@ public class PostController
     {
         try
         {
-            postService.updateComment(comment, commentId);
+            commentService.updateComment(comment, commentId);
             return "redirect:/post/{postId}";
         }
         catch (EmptyOrNullFieldException e)

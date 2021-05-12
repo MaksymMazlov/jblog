@@ -31,7 +31,7 @@ public class MainPageController
         model.addAttribute("categoriesToHTML", categories);
         model.addAttribute("principal", principal);
         model.addAttribute("page", page);
-        model.addAttribute("pages", postService.counPage());
+        model.addAttribute("pages", postService.countPage());
 
         return "index";
     }

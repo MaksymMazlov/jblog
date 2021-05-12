@@ -20,6 +20,7 @@ public class Comment
     @JoinColumn(name = "userId", referencedColumnName = "id", insertable = false, updatable = false)
     private User user;
     private LocalDateTime created;
+    private int likes;
 
     public int getId()
     {
@@ -79,5 +80,15 @@ public class Comment
     public void setUser(User user)
     {
         this.user = user;
+    }
+
+    public int getLikes()
+    {
+        return likes;
+    }
+
+    public void setLikes(int likes)
+    {
+        this.likes = likes;
     }
 }
