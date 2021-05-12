@@ -1,6 +1,7 @@
 package ua.org.jblog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +23,13 @@ public class CategoryController
     @Autowired
     private UserService userService;
 
+    @Value("${app.category.create.admin-only:true}")
+    private boolean adminOnly;
+
     @GetMapping("/category")
     public String createCategoryPage(Model model, Principal principal)
     {
-        if (userService.currentUser() == null || userService.currentUser().getRole() != Role.ADMIN)
+        if (userService.currentUser() == null || (adminOnly && userService.currentUser().getRole() != Role.ADMIN))
         {
             model.addAttribute("error", "Access denied");
         }
@@ -38,7 +42,7 @@ public class CategoryController
     @PostMapping("/category")
     public String addCategory(@ModelAttribute Category category, Principal principal, Model model)
     {
-        if (userService.currentUser() == null || userService.currentUser().getRole() != Role.ADMIN)
+        if (userService.currentUser() == null || (adminOnly && userService.currentUser().getRole() != Role.ADMIN))
         {
             model.addAttribute("error", "Access denied");
         }
