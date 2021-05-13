@@ -23,11 +23,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                    <#if principal??>
+                <#if principal??>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/post">Добавить новый пост</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/category">Добавить категорию</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Выход</a>
                     </li>
-                    <#else>
+                <#else>
                     <li class="nav-item">
                         <a class="nav-link" href="/login">Логин</a>
                     </li>
@@ -35,17 +41,6 @@
                         <a class="nav-link" href="/registration">Регистрация</a>
                     </li>
                 </#if>
-                <li class="nav-item">
-                    <a class="nav-link" href="/post">Добавить новый пост</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/category">Добавить категорию</a>
-                </li>
-                <li class="nav-item">
-                    <form class="form-inline" action="/rnd" method="post">
-                        <button type="submit" class="btn btn-primary mb-2">Добавить</button>
-                    </form>
-                </li>
             </ul>
         </div>
     </div>
