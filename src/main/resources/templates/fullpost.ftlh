@@ -17,17 +17,21 @@
                     <p class="card-text">${post.fullText?no_esc}</p>
                 </div>
                 <div class="card-footer text-muted">
-                    Posted on ${post.created} :
-                    Category: ${post.categoryName} ---
+                    Posted on ${post.created} |
+                    Category: ${post.categoryName} |
                     Views: ${post.views?c} |
                     Likes: ${post.likes?c} |
                     Author: ${post.author}
                     <#if isLike>
                     <#else>
-                        <form action="/post/${post.id?c}" method="post">
-                            <button name="likes" value="1" type="submit">+</button>
-                            <button name="likes" value="-1" type="submit">-</button>
-                        </form>
+                        <span class="float-right">
+                                    <form action="/post/${post.id?c}" method="post">
+                                         <button class="btn btn-outline-danger btn-sm" name="likes" value="-1"
+                                                 type="submit">-1</button>
+                                          <button class="btn btn-outline-success  btn-sm" name="likes" value="1"
+                                                  type="submit">+1</button>
+                                    </form>
+                                </span>
                     </#if>
                 </div>
                 <div class="card-body">
@@ -44,26 +48,37 @@
                 <div class="card mb-4">
                     <div class="card-body text-muted">
                         <small>Оставил: <b>${comment.authorComment}</b>
-                            ${comment.created}
+                            ${comment.created} \ Likes:${comment.likes}
                             <#if principal.name==comment.authorComment>
-                                <span class="float-right">
-                                        <a title="Удалить комментарий"
-                                           href="/post/${post.id?c}/comments/${comment.id}"><small
-                                                    style="color: #a71d2a">Удалить</small></a>
+                                <span class="float-right small">
+                                        <a style="color: #a71d2a" title="Удалить комментарий"
+                                           href="/post/${post.id?c}/comments/${comment.id}/del">Удалить</a>
 
-                                          <a title="Править комментарий" style="color: #28a745" data-toggle="collapse"
+                                          <a style="color: #28a745" title="Править комментарий" data-toggle="collapse"
                                              href="#edit-${comment.id}" role="button" aria-expanded="false"
                                              aria-controls="collapseExample">Править</a>
-                                         </span>
+                                </span>
 
                                 <div class="collapse" id="edit-${comment.id}">
                                     <div class="card card-body">
-                                        <form action="/post/${post.id?c}/comments/${comment.id}/edit" method="post">
+                                        <form class="show" action="/post/${post.id?c}/comments/${comment.id}/edit"
+                                              method="post">
                                             <input class="form-control" name="comment" placeholder="${comment.comment}">
                                             <button class="btn btn-success" type="submit">Изменить</button>
                                         </form>
                                     </div>
                                 </div>
+                            <#else>
+                                <#if !likedComments?seq_contains(comment.id)>
+                                    <span class="float-right">
+                                    <form action="/post/${post.id?c}/comments/${comment.id?c}/" method="post">
+                                         <button class="btn btn-outline-danger btn-sm" name="likes" value="-1"
+                                                 type="submit">-1</button>
+                                          <button class="btn btn-outline-success  btn-sm" name="likes" value="1"
+                                                  type="submit">+1</button>
+                                    </form>
+                                </span>
+                                </#if>
                             </#if>
                         </small>
 

@@ -8,6 +8,7 @@ public class CommentDto
     private int postId;
     private String authorComment;
     private String created;
+    private int likes;
 
     public int getId()
     {
@@ -57,5 +58,15 @@ public class CommentDto
     public void setCreated(String created)
     {
         this.created = created;
+    }
+
+    public int getLikes()
+    {
+        return likes;
+    }
+
+    public void setLikes(int likes)
+    {
+        this.likes = likes;
     }
 }

@@ -8,17 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ua.org.jblog.Exception.EmptyOrNullFieldException;
-import ua.org.jblog.Exception.NullException;
-import ua.org.jblog.domain.Comment;
 import ua.org.jblog.domain.Post;
-import ua.org.jblog.domain.UserLike;
-import ua.org.jblog.domain.UserLikePK;
-import ua.org.jblog.dto.CommentDto;
 import ua.org.jblog.dto.CreatePostDto;
 import ua.org.jblog.dto.PostDto;
-import ua.org.jblog.repository.CommentRepository;
 import ua.org.jblog.repository.PostRepository;
-import ua.org.jblog.repository.UserLikeRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,12 +26,6 @@ public class PostService
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     @Autowired
     private PostRepository postRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private UserLikeRepository likeRepository;
 
     public void createPost(int userId, CreatePostDto newPost, byte[] bytes, String fileName)
     {
@@ -62,12 +49,12 @@ public class PostService
         post.setCreated(LocalDateTime.now());
         post.setUserId(userId);
         LOGGER.info("In createPost: created post with Title: {}", title);
-        String imgId = saveFoto(bytes, fileName, post);
+        String imgId = savePhoto(bytes, fileName, post);
         post.setImg(imgId);
         postRepository.save(post);
     }
 
-    private String saveFoto(byte[] bytes, String fileName, Post post)
+    private String savePhoto(byte[] bytes, String fileName, Post post)
     {
         String uuid = UUID.randomUUID() + fileName;
         return Backendless.Files.saveFile("/upload/img", uuid, bytes);
@@ -98,7 +85,7 @@ public class PostService
         return listPostDto;
     }
 
-    public int counPage()
+    public int countPage()
     {
         List<Post> all = postRepository.findAllByOrderByIdDesc();
 
@@ -134,30 +121,6 @@ public class PostService
         return postDto;
     }
 
-    public void sentenceLike(PostDto postDto)
-    {
-        UserLikePK likePK = new UserLikePK(postDto.getId(), userService.currentUser().getId());
-        if (likeRepository.existsById(likePK))
-        {
-            return;
-        }
-
-        Post post = postRepository.findById(postDto.getId());
-        post.setLikes(post.getLikes() + postDto.getLikes());
-        postRepository.save(post);
-
-        UserLike like = new UserLike();
-        like.setId(likePK);
-        like.setCreated(LocalDateTime.now());
-        likeRepository.save(like);
-    }
-
-    public boolean likeExist(int idPost)
-    {
-        UserLikePK likePK = new UserLikePK(idPost, userService.currentUser().getId());
-        return likeRepository.existsById(likePK);
-    }
-
     public List<PostDto> getAllBySearch(String searchName)
     {
         if (StringUtils.isBlank(searchName))
@@ -175,70 +138,6 @@ public class PostService
         }
         return listPostDto;
     }
-
-    public void createComment(String comment, int idPost)
-    {
-        if (StringUtils.isBlank(comment))
-        {
-            throw new EmptyOrNullFieldException("Комментарий не может быть пустым");
-        }
-
-        Comment newComment = new Comment();
-        newComment.setComment(comment);
-        newComment.setPostId(idPost);
-        newComment.setCreated(LocalDateTime.now());
-        newComment.setUserId(userService.currentUser().getId());
-        commentRepository.save(newComment);
-        LOGGER.info("In createComment: created comment: {}", comment);
-    }
-
-    public List<CommentDto> getAllComment(int idPost)
-    {
-        List<Comment> commentListFromDB = commentRepository.findAllByPostIdOrderByCreatedDesc(idPost);
-        List<CommentDto> allComments = new ArrayList<>();
-        for (Comment comment : commentListFromDB)
-        {
-            CommentDto commentDto = new CommentDto();
-            commentDto.setId(comment.getId());
-            commentDto.setAuthorComment(comment.getUser().getName());
-            commentDto.setComment(comment.getComment());
-            commentDto.setCreated(comment.getCreated().format(DATE_TIME_FORMATTER));
-            commentDto.setPostId(comment.getPostId());
-            allComments.add(commentDto);
-        }
-        return allComments;
-    }
-
-    public void delComment(int commentId)
-    {
-        Comment comment = commentRepository.findById(commentId).orElse(null);
-        if (comment.getUserId() == userService.currentUser().getId())
-        {
-            commentRepository.deleteById(commentId);
-            LOGGER.info("In delComment: delete comment: ID {}", commentId);
-        }
-        else
-        {
-            LOGGER.error("In delComment: delete comment is impossible!");
-        }
-    }
-
-    public void updateComment(String comment, int commentId)
-
-    {
-        Comment oldComment = commentRepository.findById(commentId).orElseThrow(() -> new NullException("Комментарий не существует"));
-        if (oldComment.getUserId() == userService.currentUser().getId())
-        {
-            oldComment.setComment(comment);
-            commentRepository.save(oldComment);
-            LOGGER.info("In updateComment: update comment:  {}", comment);
-        }
-        else
-        {
-            LOGGER.error("In updateComment: update comment is impossible!");
-        }
-    }
-
 
     public List<PostDto> getAllByCategoryId(int catId)
     {

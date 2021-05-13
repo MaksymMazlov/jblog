@@ -27,7 +27,7 @@ public class MainPageController extends AbstractPageController
         List<PostDto> posts = postService.getForPage(page);
         model.addAttribute("posts_list", posts);
         model.addAttribute("page", page);
-        model.addAttribute("pages", postService.counPage());
+        model.addAttribute("pages", postService.countPage());
 
         return "index";
     }
