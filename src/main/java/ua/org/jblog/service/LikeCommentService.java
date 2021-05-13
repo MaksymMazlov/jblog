@@ -2,7 +2,7 @@ package ua.org.jblog.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.org.jblog.Exception.NullException;
+import ua.org.jblog.Exception.NotFoundException;
 import ua.org.jblog.domain.Comment;
 import ua.org.jblog.domain.UserCommentLike;
 import ua.org.jblog.domain.UserCommentLikePK;
@@ -45,7 +45,7 @@ public class LikeCommentService
         Comment comment = commentRepository.findById(commentId);
         if (comment == null)
         {
-            throw new NullException("Комментарий не существует");
+            throw new NotFoundException("Комментарий не существует");
         }
         comment.setLikes(comment.getLikes() + likes);
         commentRepository.save(comment);

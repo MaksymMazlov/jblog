@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import ua.org.jblog.Exception.EmptyOrNullFieldException;
+import ua.org.jblog.Exception.InvalidFieldException;
 import ua.org.jblog.domain.User;
 import ua.org.jblog.dto.CommentDto;
 import ua.org.jblog.dto.CreatePostDto;
 import ua.org.jblog.dto.PostDto;
-import ua.org.jblog.service.CategoryService;
 import ua.org.jblog.service.CommentService;
 import ua.org.jblog.service.LikeCommentService;
 import ua.org.jblog.service.LikePostService;
@@ -60,7 +59,7 @@ public class PostController extends AbstractPageController
             return "redirect:/";
 
         }
-        catch (EmptyOrNullFieldException | IOException e)
+        catch (InvalidFieldException | IOException e)
         {
             LOG.error(e.getMessage(), e);
             addCommonData(model);
@@ -112,7 +111,7 @@ public class PostController extends AbstractPageController
             commentService.createComment(comment, idPost);
             return "redirect:/post/{id}";
         }
-        catch (EmptyOrNullFieldException e)
+        catch (InvalidFieldException e)
         {
             return "redirect:/post/{id}";
         }
@@ -135,7 +134,7 @@ public class PostController extends AbstractPageController
             commentService.updateComment(comment, commentId);
             return "redirect:/post/{postId}";
         }
-        catch (EmptyOrNullFieldException e)
+        catch (InvalidFieldException e)
         {
             return "redirect:/post/{postId}";
         }

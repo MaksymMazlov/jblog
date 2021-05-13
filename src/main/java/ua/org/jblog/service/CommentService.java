@@ -5,8 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.org.jblog.Exception.EmptyOrNullFieldException;
-import ua.org.jblog.Exception.NullException;
+import ua.org.jblog.Exception.InvalidFieldException;
+import ua.org.jblog.Exception.NotFoundException;
 import ua.org.jblog.domain.Comment;
 import ua.org.jblog.dto.CommentDto;
 import ua.org.jblog.repository.CommentRepository;
@@ -30,7 +30,7 @@ public class CommentService
     {
         if (StringUtils.isBlank(comment))
         {
-            throw new EmptyOrNullFieldException("Комментарий не может быть пустым");
+            throw new InvalidFieldException("Комментарий не может быть пустым");
         }
 
         Comment newComment = new Comment();
@@ -65,7 +65,7 @@ public class CommentService
         Comment comment = commentRepository.findById(commentId);
         if (comment == null)
         {
-            throw new NullException("Комментарий не существует");
+            throw new NotFoundException("Комментарий не существует");
         }
 
         if (comment.getUserId() == userService.currentUser().getId())
@@ -85,7 +85,7 @@ public class CommentService
         Comment oldComment = commentRepository.findById(commentId);
         if (comment == null)
         {
-            throw new NullException("Комментарий не существует");
+            throw new NotFoundException("Комментарий не существует");
         }
 
         if (oldComment.getUserId() == userService.currentUser().getId())

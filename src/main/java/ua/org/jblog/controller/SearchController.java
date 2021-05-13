@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ua.org.jblog.Exception.EmptyOrNullFieldException;
+import ua.org.jblog.Exception.InvalidFieldException;
 import ua.org.jblog.dto.PostDto;
 import ua.org.jblog.service.PostService;
 
@@ -28,7 +28,7 @@ public class SearchController extends AbstractPageController
             model.addAttribute("searchName", s);
             return "searchPage";
         }
-        catch (EmptyOrNullFieldException e)
+        catch (InvalidFieldException e)
         {
 
             return "redirect:/";

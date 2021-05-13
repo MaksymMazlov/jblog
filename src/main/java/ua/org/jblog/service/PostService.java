@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ua.org.jblog.Exception.EmptyOrNullFieldException;
+import ua.org.jblog.Exception.InvalidFieldException;
 import ua.org.jblog.domain.Post;
 import ua.org.jblog.dto.CreatePostDto;
 import ua.org.jblog.dto.PostDto;
@@ -32,12 +32,12 @@ public class PostService
         String title = newPost.getTitle();
         if (StringUtils.isBlank(title))
         {
-            throw new EmptyOrNullFieldException("Поле Title не может быть пустым");
+            throw new InvalidFieldException("Поле Title не может быть пустым");
         }
         String text = newPost.getText();
         if (StringUtils.isBlank(text))
         {
-            throw new EmptyOrNullFieldException("Поле Text не может быть пустым");
+            throw new InvalidFieldException("Поле Text не может быть пустым");
         }
 
         Post post = new Post();
@@ -125,7 +125,7 @@ public class PostService
     {
         if (StringUtils.isBlank(searchName))
         {
-            throw new EmptyOrNullFieldException("Not found search name!");
+            throw new InvalidFieldException("Not found search name!");
         }
         String searchFromBD = "%" + searchName + "%";
 
