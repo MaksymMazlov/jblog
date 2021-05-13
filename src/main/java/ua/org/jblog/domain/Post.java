@@ -31,6 +31,7 @@ public class Post
     @JoinColumn(name = "userId", referencedColumnName = "id", insertable = false, updatable = false)
     private User user;
     private Integer userId;
+    @Column(length = 500)
     private String img;
 
     public int getId()
