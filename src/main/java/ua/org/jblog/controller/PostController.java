@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ua.org.jblog.Exception.EmptyOrNullFieldException;
-import ua.org.jblog.domain.Category;
 import ua.org.jblog.domain.User;
 import ua.org.jblog.dto.CommentDto;
 import ua.org.jblog.dto.CreatePostDto;
@@ -25,18 +24,15 @@ import ua.org.jblog.service.PostService;
 import ua.org.jblog.service.UserService;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
 @Controller
-public class PostController
+public class PostController extends AbstractPageController
 {
     private static final Logger LOG = LoggerFactory.getLogger(PostController.class);
     @Autowired
     private PostService postService;
-    @Autowired
-    private CategoryService categoryService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -46,11 +42,9 @@ public class PostController
     @Autowired
     private LikePostService likePostService;
     @GetMapping("/post")
-    public String getPageCreateAddPost(Model model, Principal principal)
+    public String getPageCreateAddPost(Model model)
     {
-        List<Category> categories = categoryService.getAll();
-        model.addAttribute("categoriesToHTML", categories);
-        model.addAttribute("principal", principal);
+        addCommonData(model);
         return "createPost";
     }
 
@@ -69,8 +63,7 @@ public class PostController
         catch (EmptyOrNullFieldException | IOException e)
         {
             LOG.error(e.getMessage(), e);
-            List<Category> categories = categoryService.getAll();
-            model.addAttribute("categoriesToHTML", categories);
+            addCommonData(model);
             model.addAttribute("null_error", e.getMessage());
 
             return "createPost";
@@ -78,13 +71,12 @@ public class PostController
     }
 
     @GetMapping("/post/{id}")
-    public String getFullPost(Model model, @PathVariable int id, Principal principal)
+    public String getFullPost(Model model, @PathVariable int id)
     {
         PostDto post = postService.getPost(id);
         model.addAttribute("post", post);
 
-        List<Category> categories = categoryService.getAll();
-        model.addAttribute("categoriesToHTML", categories);
+        addCommonData(model);
 
         List<CommentDto> commentList = commentService.getAllComment(id);
         model.addAttribute("comments_list", commentList);
@@ -92,7 +84,6 @@ public class PostController
         model.addAttribute("isLike", likePostService.likeExist(id));
         Set<Integer> likedCommentsByUser = likeCommentService.getLikedCommentsByUser(userService.currentUser().getId(), id);
         model.addAttribute("likedComments", likedCommentsByUser);
-        model.addAttribute("principal", principal);
         return "fullpost";
 
     }
