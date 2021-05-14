@@ -9,20 +9,7 @@
             <h1 class="my-4"><small>Последние новости</small>
             </h1>
             <#list posts_list as post>
-                <!-- Blog Post -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h2 class="card-title">${post.title}</h2>
-                        <img class="card-img-top" src="${post.img?no_esc}" alt="Card image cap">
-                        <p class="card-text">${post.shortText?no_esc}</p>
-                        <a href="/post/${post.id?c}" class="btn btn-primary">Read More &rarr;</a>
-                    </div>
-                    <div class="card-footer text-muted">
-                        Posted on ${post.created} : Category: ${post.categoryName} --- Views: ${post.views?c} |
-                        Likes: ${post.likes?c} | Author:
-                        ${post.author}
-                    </div>
-                </div>
+                <#include "shortpost.ftlh"/>
             </#list>
             <!-- Pagination -->
             <ul class="pagination pagination-sm">
