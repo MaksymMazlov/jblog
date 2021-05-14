@@ -12,6 +12,11 @@
             </h1>
             <div class="card mb-4">
                 <div class="card-body">
+                    <div class="text-muted small">
+                        Искать еще по: <a href="/tag/${post.tag}"> ${post.tag}</a> | <span class="float-right">
+                            <#if favorite><s>Сохранено</s><#else><a href="/post/${post.id?c}/save"> Сохранить </a></#if>
+                           </span>
+                    </div>
                     <h2 class="card-title">${post.title}</h2>
                     <img class="card-img-top" src="${post.img?no_esc}" alt="Card image cap">
                     <p class="card-text">${post.fullText?no_esc}</p>

@@ -12,9 +12,9 @@ import ua.org.jblog.domain.Post;
 import ua.org.jblog.dto.CreatePostDto;
 import ua.org.jblog.dto.PostDto;
 import ua.org.jblog.repository.PostRepository;
+import ua.org.jblog.service.mapper.ConverterPostToPostDto;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +23,8 @@ import java.util.UUID;
 public class PostService
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(PostService.class);
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    @Autowired
+    private ConverterPostToPostDto postToPostDto;
     @Autowired
     private PostRepository postRepository;
 
@@ -66,7 +67,7 @@ public class PostService
         List<PostDto> listPostDto = new ArrayList<>();
         for (Post post : postList)
         {
-            PostDto postDto = convertToDto(post);
+            PostDto postDto = postToPostDto.convertToDto(post);
             listPostDto.add(postDto);
         }
         return listPostDto;
@@ -79,7 +80,7 @@ public class PostService
         List<PostDto> listPostDto = new ArrayList<>();
         for (Post post : postList)
         {
-            PostDto postDto = convertToDto(post);
+            PostDto postDto = postToPostDto.convertToDto(post);
             listPostDto.add(postDto);
         }
         return listPostDto;
@@ -99,27 +100,10 @@ public class PostService
         int views = post.getViews() + 1;
         post.setViews(views);
         postRepository.save(post);
-        PostDto postDto = convertToDto(post);
+        PostDto postDto = postToPostDto.convertToDto(post);
         return postDto;
     }
 
-    private PostDto convertToDto(Post post)
-    {
-        PostDto postDto = new PostDto();
-
-        postDto.setId(post.getId());
-        postDto.setTitle(post.getTitle());
-        postDto.setFullText(post.getFullText());
-        postDto.setShortText(post.getShortText());
-        postDto.setTag(post.getTag());
-        postDto.setViews(post.getViews());
-        postDto.setLikes(post.getLikes());
-        postDto.setCreated(post.getCreated().format(DATE_TIME_FORMATTER));
-        postDto.setCategoryName(post.getCategory().getName());
-        postDto.setAuthor(post.getUser().getName());
-        postDto.setImg(post.getImg());
-        return postDto;
-    }
 
     public List<PostDto> getAllBySearch(String searchName)
     {
@@ -133,7 +117,7 @@ public class PostService
         List<PostDto> listPostDto = new ArrayList<>();
         for (Post post : postList)
         {
-            PostDto postDto = convertToDto(post);
+            PostDto postDto = postToPostDto.convertToDto(post);
             listPostDto.add(postDto);
         }
         return listPostDto;
@@ -145,9 +129,10 @@ public class PostService
         List<PostDto> listPostDto = new ArrayList<>();
         for (Post post : postList)
         {
-            PostDto postDto = convertToDto(post);
+            PostDto postDto = postToPostDto.convertToDto(post);
             listPostDto.add(postDto);
         }
         return listPostDto;
     }
+
 }

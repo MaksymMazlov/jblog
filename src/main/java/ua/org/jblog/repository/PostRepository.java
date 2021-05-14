@@ -19,5 +19,7 @@ public interface PostRepository extends JpaRepository<Post, Integer>
     List<Post> findAllByFullTextLike(String str);
 
     List<Post> findAllByCategoryId(int catId);
+
+    List<Post> findByIdInOrderByCreatedDesc(List<Integer> listIdPosts);
 }
 

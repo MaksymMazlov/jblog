@@ -31,6 +31,9 @@
                         <a class="nav-link" href="/category">Добавить категорию</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/favorites"><b>Сохраненные</b></a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/logout">Выход</a>
                     </li>
                 <#else>
