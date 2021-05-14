@@ -17,6 +17,7 @@ import ua.org.jblog.dto.CommentDto;
 import ua.org.jblog.dto.CreatePostDto;
 import ua.org.jblog.dto.PostDto;
 import ua.org.jblog.service.CommentService;
+import ua.org.jblog.service.FavoritePostService;
 import ua.org.jblog.service.LikeCommentService;
 import ua.org.jblog.service.LikePostService;
 import ua.org.jblog.service.PostService;
@@ -40,6 +41,9 @@ public class PostController extends AbstractPageController
     private LikeCommentService likeCommentService;
     @Autowired
     private LikePostService likePostService;
+    @Autowired
+    private FavoritePostService favoritePostService;
+
     @GetMapping("/post")
     public String getPageCreateAddPost(Model model)
     {
@@ -83,8 +87,16 @@ public class PostController extends AbstractPageController
         model.addAttribute("isLike", likePostService.likeExist(id));
         Set<Integer> likedCommentsByUser = likeCommentService.getLikedCommentsByUser(userService.currentUser().getId(), id);
         model.addAttribute("likedComments", likedCommentsByUser);
+        model.addAttribute("favorite",favoritePostService.isFavorite(id));
         return "fullpost";
 
+    }
+
+    @GetMapping("/post/{id}/save")
+    public String saveFavoritePost(@PathVariable int id)
+    {
+        favoritePostService.addFavoritePost(id);
+        return "redirect:/post/" + id;
     }
 
     @PostMapping("/post/{id}")
