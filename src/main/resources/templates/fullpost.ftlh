@@ -13,7 +13,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="text-muted small">
-                        Искать еще по: <a href="/tag/${post.tag}"> ${post.tag}</a> | <span class="float-right">
+                            <a href="/tag/${post.tag}"> ${post.tag}</a> <span class="float-right">
                             <#if favorite><s>Сохранено</s><#else><a href="/post/${post.id?c}/save"> Сохранить </a></#if>
                            </span>
                     </div>

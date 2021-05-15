@@ -14,6 +14,7 @@
                     <form action="/login" method="post">
                         <input class="form-control" type="text" name="username" placeholder="Введите логин">
                         <input class="form-control" type="text" name="password" placeholder="Введите пароль">
+                        <br>
                         <button class="btn btn-success" type="submit">Войти</button>
                     </form>
                 </div>
