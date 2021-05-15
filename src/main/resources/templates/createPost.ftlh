@@ -7,7 +7,7 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
 
-            <h1 class="my-4"><small>Добавить новый пост</small>
+            <h1 class="my-4"><small>Добавить новый пост:</small>
             </h1>
             <!-- Blog Post -->
 
@@ -31,7 +31,7 @@
                         <br>
                         <label for="exampleFormControlFile1">Загрузите фото</label>
                         <input type="file" name="file">
-                        <button class="btn btn-success" type="submit">Button</button>
+                        <button class="btn btn-success" type="submit">Опубликовать</button>
                     </form>
                 </div>
             </div>

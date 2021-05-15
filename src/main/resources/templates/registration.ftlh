@@ -7,18 +7,18 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
 
-            <h1 class="my-4"><small>Регистрация</small>
+            <h1 class="my-4"><small>Регистрация:</small>
             </h1>
             <!-- Blog Post -->
             <div class="card mb-4">
                 <div class="card-body">
                     <form action="/registration" method="post">
-                        <label>Регистрация:</label>
-                        <#if error_req??><div class="alert alert-danger">${error_req}</div></#if>
-                        <#if hello??><div class="alert alert-light">${hello}</div></#if>
-                         <input class="form-control" type="text" name="name" placeholder="Введите имя">
-                         <input class="form-control" type="text" name="password" placeholder="Введите пароль">
-                        <button class="btn btn-success" type="submit">Button</button>
+                        <#if error_req??>
+                            <div class="alert alert-danger">${error_req}</div></#if>
+                        <input class="form-control" type="text" name="name" placeholder="Введите имя">
+                        <input class="form-control" type="text" name="password" placeholder="Введите пароль">
+                        <br>
+                        <button class="btn btn-success" type="submit">Зарегистрироваться</button>
                     </form>
                 </div>
             </div>
