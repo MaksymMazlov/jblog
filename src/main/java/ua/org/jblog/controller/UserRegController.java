@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import ua.org.jblog.Exception.InvalidFieldException;
 import ua.org.jblog.dto.UserRegDto;
 import ua.org.jblog.service.UserService;
 
@@ -23,10 +24,20 @@ public class UserRegController extends AbstractPageController
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute UserRegDto userRegDto)
+    public String registration(@ModelAttribute UserRegDto userRegDto, Model model)
     {
-        userService.registration(userRegDto);
-        return "redirect:/login";
+        try
+        {
+            userService.registration(userRegDto);
+            model.addAttribute("name",userRegDto.getName());
+            addCommonData(model);
+            return "hello";
+        }
+        catch (InvalidFieldException e){
+            addCommonData(model);
+            model.addAttribute("error_req", e.getMessage());
+            return "registration";
+        }
     }
 
 }

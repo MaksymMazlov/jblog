@@ -3,27 +3,19 @@
 <div class="container">
 
     <div class="row">
-
-        <!-- Blog Entries Column -->
         <div class="col-md-8">
-            <h1 class="my-4"><small>Вход на сайт:</small></h1>
-            <!-- Blog Post -->
             <div class="card mb-4">
-                <div class="card-body">
-                    <#if RequestParameters.error??><div class="alert alert-danger">Неверные данные</div></#if>
-                    <form action="/login" method="post">
-                        <input class="form-control" type="text" name="username" placeholder="Введите логин">
-                        <input class="form-control" type="text" name="password" placeholder="Введите пароль">
-                        <button class="btn btn-success" type="submit">Войти</button>
-                    </form>
+                <br>
+                <div class="card-body text-center">
+                    <div class="alert alert-success">Спасибо за регистрацию, <b>${name}</b> !</div>
+                   <small class="text-muted">Через 2 сек. произойдет перенаправление на страницу <a href="/login">авторизации</a></small>
+                    <META HTTP-EQUIV="refresh" CONTENT="2;URL=/login">
                 </div>
             </div>
-
         </div>
 
         <!-- Sidebar Widgets Column -->
         <div class="col-md-4">
-
             <!-- Search Widget -->
             <#include "searchWidget.ftlh">
 
