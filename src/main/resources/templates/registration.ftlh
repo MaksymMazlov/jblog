@@ -14,8 +14,10 @@
                 <div class="card-body">
                     <form action="/registration" method="post">
                         <label>Регистрация:</label>
-                        <input class="form-control" type="text" name="name" placeholder="Введите имя для регистрации">
-                        <input class="form-control" type="text" name="password" placeholder="Введите пароль для регистрации">
+                        <#if error_req??><div class="alert alert-danger">${error_req}</div></#if>
+                        <#if hello??><div class="alert alert-light">${hello}</div></#if>
+                         <input class="form-control" type="text" name="name" placeholder="Введите имя">
+                         <input class="form-control" type="text" name="password" placeholder="Введите пароль">
                         <button class="btn btn-success" type="submit">Button</button>
                     </form>
                 </div>
