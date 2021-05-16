@@ -17,7 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         http.authorizeRequests()
-                .antMatchers("/", "/registration").permitAll()
+                .antMatchers("/", "/registration", "/activate/*").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login").permitAll()
                 .and().logout().permitAll()
@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     public void configure(WebSecurity web) throws Exception
     {
-        web.ignoring().antMatchers("/css/**","/vendor/**","/post/img/**");
+        web.ignoring().antMatchers("/css/**", "/vendor/**", "/post/img/**");
     }
 
     @Bean

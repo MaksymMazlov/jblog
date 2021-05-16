@@ -7,9 +7,11 @@
             <div class="card mb-4">
                 <br>
                 <div class="card-body text-center">
-                    <div class="alert alert-success">Спасибо за регистрацию, <b>${name}</b> !</div>
-                   <small class="text-muted">Через 2 сек. произойдет перенаправление на страницу <a href="/login">авторизации</a></small>
-                    <META HTTP-EQUIV="refresh" CONTENT="2;URL=/login">
+                    <div class="alert alert-success">Дякуємо за реєстрацію!</div>
+                    <small class="text-muted">Для завершення реєстрації на e-mail: <b>${name}</b> було відправлено посилання.</small>
+                    <br>
+                    <small class="text-muted">Через 7 сек. відбудеться перенаправлення на сторінку <a href="/login">авторизації</a></small>
+                    <META HTTP-EQUIV="refresh" CONTENT="7;URL=/login">
                 </div>
             </div>
         </div>
