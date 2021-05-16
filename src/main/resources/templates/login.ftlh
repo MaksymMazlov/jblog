@@ -1,6 +1,6 @@
 <#include "menu.ftlh">
 <!-- Page Content -->
-<div class="container">
+<div class="container" xmlns="http://www.w3.org/1999/html">
 
     <div class="row">
 
@@ -10,7 +10,10 @@
             <!-- Blog Post -->
             <div class="card mb-4">
                 <div class="card-body">
-                    <#if RequestParameters.error??><div class="alert alert-danger">Неверные данные</div></#if>
+                    <span style="color: #28a745"<#if activated??> <b> ${activated} </b> </#if></span>
+                    <span style="color: #a71d2a"> <#if no_activated??><b> ${no_activated} </b></#if></span>
+                    <#if RequestParameters.error??>
+                        <div class="alert alert-danger">Неверные данные</div></#if>
                     <form action="/login" method="post">
                         <input class="form-control" type="text" name="username" placeholder="Введите логин">
                         <input class="form-control" type="text" name="password" placeholder="Введите пароль">

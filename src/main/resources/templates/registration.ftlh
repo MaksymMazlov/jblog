@@ -1,6 +1,6 @@
 <#include "menu.ftlh">
 <!-- Page Content -->
-<div class="container">
+<div class="container" xmlns="http://www.w3.org/1999/html">
 
     <div class="row">
 
@@ -12,13 +12,26 @@
             <!-- Blog Post -->
             <div class="card mb-4">
                 <div class="card-body">
-                    <form action="/registration" method="post">
-                        <#if error_req??>
-                            <div class="alert alert-danger">${error_req}</div></#if>
-                        <input class="form-control" type="text" name="name" placeholder="Введите имя">
-                        <input class="form-control" type="text" name="password" placeholder="Введите пароль">
+                    <form action="/registration" method="post" class="text-muted">
+                        <#if error_req_email??>
+                            <span style="color: #a71d2a"> ${error_req_email}</span>
+                        <#else>
+                            <label class="form-label">E-mail:</label>
+                        </#if>
+
+                        <input class="form-control" type="text" name="name"
+                               value="<#if userRegDto??>${userRegDto.name}</#if>" placeholder="Введіть e-mail">
+                        <div class="form-text small">На вказаний E-mail ми відправимо листа для підтвердження.</div>
+
+                        <#if error_req_pass??>
+                            <span style="color: #a71d2a"> ${error_req_pass}</span>
+                        <#else>
+                            <label class="form-label">Пароль:</label>
+                        </#if>
+                        <input class="form-control" type="text" name="password" placeholder="Введіть пароль">
+                        <div class="form-text small">Пароль повинен бути від 6 до 24 символів</div>
                         <br>
-                        <button class="btn btn-success" type="submit">Зарегистрироваться</button>
+                        <button class="btn btn-success" type="submit">Реєстрація</button>
                     </form>
                 </div>
             </div>

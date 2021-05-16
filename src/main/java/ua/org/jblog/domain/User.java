@@ -16,6 +16,8 @@ public class User
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private boolean active;
+    private String code;
 
     public int getId()
     {
@@ -55,5 +57,25 @@ public class User
     public void setRole(Role role)
     {
         this.role = role;
+    }
+
+    public boolean isActive()
+    {
+        return active;
+    }
+
+    public void setActive(boolean active)
+    {
+        this.active = active;
+    }
+
+    public String getCode()
+    {
+        return code;
+    }
+
+    public void setCode(String code)
+    {
+        this.code = code;
     }
 }
