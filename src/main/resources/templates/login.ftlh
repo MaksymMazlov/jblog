@@ -10,7 +10,7 @@
             <!-- Blog Post -->
             <div class="card mb-4">
                 <div class="card-body">
-                    <span style="color: #28a745"<#if activated??> <b> ${activated} </b> </#if></span>
+                    <span style="color: #28a745"> <#if activated??> <b> ${activated} </b> </#if></span>
                     <span style="color: #a71d2a"> <#if no_activated??><b> ${no_activated} </b></#if></span>
                     <#if RequestParameters.error??>
                         <div class="alert alert-danger">Неверные данные</div></#if>

@@ -1,5 +1,6 @@
 package ua.org.jblog.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,22 +11,36 @@ import java.util.Properties;
 @Configuration
 public class MailConfig
 {
-    public static final String MY_EMAIL = "MazlovMaxim@gmail.com";
-    public static final String MY_PASSWORD = "fgartysaahlvmzgl";
+    @Value("${app.mail.from-email}")
+    private String fromEmail;
+    @Value("${app.mail.from-password}")
+    private String fromPassword;
+    @Value("${app.mail.host}")
+    private String host;
+    @Value("${app.mail.port}")
+    private int port;
+    @Value("${app.mail.transport.protocol}")
+    private String protocol;
+    @Value("${app.mail.smtp.auth}")
+    private String auth;
+    @Value("${app.mail.smtp.starttls.enable}")
+    private String starttlsEnable;
+    @Value("${app.mail.debug}")
+    private String debug;
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
+        mailSender.setHost(host);
+        mailSender.setPort(port);
 
-        mailSender.setUsername(MY_EMAIL);
-        mailSender.setPassword(MY_PASSWORD);
+        mailSender.setUsername(fromEmail);
+        mailSender.setPassword(fromPassword);
 
         Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
+        props.put("mail.transport.protocol", protocol);
+        props.put("mail.smtp.auth", auth);
+        props.put("mail.smtp.starttls.enable", starttlsEnable);
+        props.put("mail.debug", debug);
 
         return mailSender;
     }
