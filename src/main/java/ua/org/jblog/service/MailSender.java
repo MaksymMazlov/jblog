@@ -1,6 +1,7 @@
 package ua.org.jblog.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -10,11 +11,12 @@ public class MailSender
 {
     @Autowired
     public JavaMailSender emailSender;
-    public static final String MY_EMAIL = "MazlovMaxim@gmail.com";
+    @Value("${app.mail.from-email}")
+    private String fromEmail;
     public void sendEmail(String emailTo, String subject, String message)
     {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom(MY_EMAIL);
+        mailMessage.setFrom(fromEmail);
         mailMessage.setTo(emailTo);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
