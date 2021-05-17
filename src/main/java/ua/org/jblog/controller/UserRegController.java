@@ -1,7 +1,6 @@
 package ua.org.jblog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,14 +8,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 import ua.org.jblog.Exception.InvalidEmailException;
 import ua.org.jblog.Exception.InvalidPasswordException;
-import ua.org.jblog.dto.CaptchaResponseDto;
 import ua.org.jblog.dto.UserRegDto;
+import ua.org.jblog.service.RecaptchaService;
 import ua.org.jblog.service.UserService;
-
-import java.util.Collections;
 
 @Controller
 public class UserRegController extends AbstractPageController
@@ -24,10 +20,7 @@ public class UserRegController extends AbstractPageController
     @Autowired
     private UserService userService;
     @Autowired
-    private RestTemplate restTemplate;
-    @Value("${app.recaptcha.secret}")
-    private String secret;
-    private static final String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
+    private RecaptchaService recaptchaService;
 
     @GetMapping("/registration")
     public String showPageReg(Model model)
@@ -42,9 +35,7 @@ public class UserRegController extends AbstractPageController
     {
         try
         {
-            String url = String.format(CAPTCHA_URL, secret, response);
-            CaptchaResponseDto fullResponse = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
-            if (!fullResponse.isSuccess())
+            if (!recaptchaService.validate(response))
             {
                 model.addAttribute("captcha_error", "Некорректна каптча");
             }
