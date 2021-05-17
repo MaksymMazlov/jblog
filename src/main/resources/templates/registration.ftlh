@@ -19,7 +19,7 @@
                             <label class="form-label">E-mail:</label>
                         </#if>
                         <input class="form-control" type="email" name="name"
-                               value="<#if userRegDto??>${userRegDto.name}</#if>" placeholder="Введіть e-mail">
+                               value="<#if userRegDto??>${userRegDto.name}</#if>" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" required="required" placeholder="Введіть e-mail">
                         <div class="form-text small">На вказаний E-mail ми відправимо листа для підтвердження.</div>
 
                         <#if error_req_pass??>
