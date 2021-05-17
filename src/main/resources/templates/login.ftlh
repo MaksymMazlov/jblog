@@ -15,8 +15,8 @@
                     <#if RequestParameters.error??>
                         <div class="alert alert-danger">Неверные данные</div></#if>
                     <form action="/login" method="post">
-                        <input class="form-control" type="text" name="username" placeholder="Введите логин">
-                        <input class="form-control" type="text" name="password" placeholder="Введите пароль">
+                        <input class="form-control" type="email" name="username" placeholder="Введите логин">
+                        <input class="form-control" type="password" name="password" placeholder="Введите пароль">
                         <br>
                         <button class="btn btn-success" type="submit">Войти</button>
                     </form>
