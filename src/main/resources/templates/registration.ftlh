@@ -18,7 +18,6 @@
                         <#else>
                             <label class="form-label">E-mail:</label>
                         </#if>
-
                         <input class="form-control" type="text" name="name"
                                value="<#if userRegDto??>${userRegDto.name}</#if>" placeholder="Введіть e-mail">
                         <div class="form-text small">На вказаний E-mail ми відправимо листа для підтвердження.</div>
@@ -31,6 +30,8 @@
                         <input class="form-control" type="text" name="password" placeholder="Введіть пароль">
                         <div class="form-text small">Пароль повинен бути від 6 до 24 символів</div>
                         <br>
+                        <#if captcha_error??><span style="color: #a71d2a"> ${captcha_error}</span></#if>
+                        <div class="g-recaptcha" data-sitekey="6LdGatgaAAAAAGs86pWJ_qE6T_CU5VfGhTnVr0Ks"></div>
                         <button class="btn btn-success" type="submit">Реєстрація</button>
                     </form>
                 </div>
