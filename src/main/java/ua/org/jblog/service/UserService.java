@@ -1,7 +1,10 @@
 package ua.org.jblog.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +22,7 @@ import java.util.UUID;
 @Service
 public class UserService
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -26,6 +30,8 @@ public class UserService
     @Autowired
     private MailSender mailSender;
 
+    @Value("${app.mail.active-link}")
+    private String link;
 
     public void registration(UserRegDto userRegDto)
     {
@@ -66,8 +72,8 @@ public class UserService
         user.setRole(Role.USER);
         user.setCode(UUID.randomUUID().toString());
         userRepository.save(user);
-
-        String link = "http://localhost:8080/activate/%s";
+        LOGGER.info("In UserService. registration() -> registration user: {}",user.getName());
+        String linka = link+"/active/%s";
         String message = String.format("Дякуємо за реєстрацію!\n" +
                         "Для підтвердження перейдіть за посиланням: " + link,
                 user.getCode());

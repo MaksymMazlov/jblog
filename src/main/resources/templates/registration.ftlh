@@ -18,7 +18,7 @@
                         <#else>
                             <label class="form-label">E-mail:</label>
                         </#if>
-                        <input class="form-control" type="text" name="name"
+                        <input class="form-control" type="email" name="name"
                                value="<#if userRegDto??>${userRegDto.name}</#if>" placeholder="Введіть e-mail">
                         <div class="form-text small">На вказаний E-mail ми відправимо листа для підтвердження.</div>
 
@@ -27,7 +27,7 @@
                         <#else>
                             <label class="form-label">Пароль:</label>
                         </#if>
-                        <input class="form-control" type="text" name="password" placeholder="Введіть пароль">
+                        <input class="form-control" type="password" name="password" placeholder="Введіть пароль">
                         <div class="form-text small">Пароль повинен бути від 6 до 24 символів</div>
                         <br>
                         <#if captcha_error??><span style="color: #a71d2a"> ${captcha_error}</span></#if>
