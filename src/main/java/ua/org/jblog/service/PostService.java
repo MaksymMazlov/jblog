@@ -27,6 +27,8 @@ public class PostService
     private ConverterPostToPostDto postToPostDto;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private CacheService cacheService;
 
     public void createPost(int userId, CreatePostDto newPost, byte[] bytes, String fileName)
     {
@@ -53,6 +55,7 @@ public class PostService
         String imgId = savePhoto(bytes, fileName, post);
         post.setImg(imgId);
         postRepository.save(post);
+        cacheService.cleanPostByPageCache();
     }
 
     private String savePhoto(byte[] bytes, String fileName, Post post)
@@ -61,20 +64,14 @@ public class PostService
         return Backendless.Files.saveFile("/upload/img", uuid, bytes);
     }
 
-    public List<PostDto> getAll()
-    {
-        List<Post> postList = postRepository.findAllByOrderByIdDesc();
-        List<PostDto> listPostDto = new ArrayList<>();
-        for (Post post : postList)
-        {
-            PostDto postDto = postToPostDto.convertToDto(post);
-            listPostDto.add(postDto);
-        }
-        return listPostDto;
-    }
-
     public List<PostDto> getForPage(int page)
     {
+        List<PostDto> cached = cacheService.getPostByPageFromCache(page - 1);
+        if (cached != null)
+        {
+            return cached;
+        }
+
         PageRequest pageRequest = PageRequest.of(page - 1, 5);
         List<Post> postList = postRepository.findAllByOrderByIdDesc(pageRequest);
         List<PostDto> listPostDto = new ArrayList<>();
@@ -83,6 +80,7 @@ public class PostService
             PostDto postDto = postToPostDto.convertToDto(post);
             listPostDto.add(postDto);
         }
+        cacheService.addPostByPageToCache(page - 1, listPostDto);
         return listPostDto;
     }
 

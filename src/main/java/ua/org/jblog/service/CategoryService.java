@@ -12,20 +12,30 @@ public class CategoryService
 {
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private CacheService cacheService;
 
     public void save(Category category)
     {
         categoryRepository.save(category);
+        cacheService.cleanCategories();
     }
 
     public List<Category> getAll()
     {
-        return categoryRepository.findAll();
+        List<Category> categoriesCache = cacheService.getCategoriesCache();
+        if (!categoriesCache.isEmpty())
+        {
+            return categoriesCache;
+        }
+
+        List<Category> categoriesFromDb = categoryRepository.findAll();
+        cacheService.addCategoriesCache(categoriesFromDb);
+        return categoriesFromDb;
     }
 
     public String categoryNameById(int catId)
     {
         return categoryRepository.findById(catId).getName();
-
     }
 }
