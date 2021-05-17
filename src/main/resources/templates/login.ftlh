@@ -18,6 +18,7 @@
                         <input class="form-control" type="email" name="username" placeholder="Введите логин">
                         <input class="form-control" type="password" name="password" placeholder="Введите пароль">
                         <br>
+                        <div class="g-recaptcha" data-sitekey="6LdGatgaAAAAAGs86pWJ_qE6T_CU5VfGhTnVr0Ks"></div>
                         <button class="btn btn-success" type="submit">Войти</button>
                     </form>
                 </div>
