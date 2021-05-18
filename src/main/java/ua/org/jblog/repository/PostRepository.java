@@ -21,5 +21,7 @@ public interface PostRepository extends JpaRepository<Post, Integer>
     List<Post> findAllByCategoryId(int catId);
 
     List<Post> findByIdInOrderByCreatedDesc(List<Integer> listIdPosts);
+
+    List<Post> findTop10ByOrderByViewsDesc();
 }
 
