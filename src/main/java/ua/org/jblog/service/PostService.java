@@ -98,8 +98,7 @@ public class PostService
         int views = post.getViews() + 1;
         post.setViews(views);
         postRepository.save(post);
-        PostDto postDto = postToPostDto.convertToDto(post);
-        return postDto;
+        return postToPostDto.convertToDto(post);
     }
 
 
@@ -133,4 +132,15 @@ public class PostService
         return listPostDto;
     }
 
+    public List<PostDto> getTopPosts()
+    {
+        List<Post> top10ByViews = postRepository.findTop10ByOrderByViewsDesc();
+        List<PostDto> listPostDto = new ArrayList<>();
+        for (Post post : top10ByViews)
+        {
+            PostDto postDto = postToPostDto.convertToDto(post);
+            listPostDto.add(postDto);
+        }
+        return listPostDto;
+    }
 }
