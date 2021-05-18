@@ -72,8 +72,8 @@ public class UserService
         user.setRole(Role.USER);
         user.setCode(UUID.randomUUID().toString());
         userRepository.save(user);
-        LOGGER.info("In UserService. registration() -> registration user: {}",user.getName());
-        String linka = link+"/active/%s";
+        LOGGER.info("In UserService. registration() -> registration user: {}", user.getName());
+        String linka = link + "/active/%s";
         String message = String.format("Дякуємо за реєстрацію!\n" +
                         "Для підтвердження перейдіть за посиланням: " + link,
                 user.getCode());

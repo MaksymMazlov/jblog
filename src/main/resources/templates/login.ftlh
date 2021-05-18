@@ -15,7 +15,7 @@
                     <#if RequestParameters.error??>
                         <div class="alert alert-danger">Неверные данные</div></#if>
                     <form action="/login" method="post">
-                        <input class="form-control" type="email" name="username" placeholder="Введите логин">
+                        <input class="form-control" type="email" name="username" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" required="required" placeholder="Введите логин">
                         <input class="form-control" type="password" name="password" placeholder="Введите пароль">
                         <br>
                         <div class="g-recaptcha" data-sitekey="6LdGatgaAAAAAGs86pWJ_qE6T_CU5VfGhTnVr0Ks"></div>
