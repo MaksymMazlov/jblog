@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.com/MaksymMazlov/jblog.svg?branch=main)](https://travis-ci.com/MaksymMazlov/jblog)
