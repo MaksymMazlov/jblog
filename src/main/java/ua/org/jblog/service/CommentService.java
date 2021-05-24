@@ -25,6 +25,8 @@ public class CommentService
     private CommentRepository commentRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CacheService cacheService;
 
     public void createComment(String comment, int idPost)
     {
@@ -39,14 +41,21 @@ public class CommentService
         newComment.setCreated(LocalDateTime.now());
         newComment.setUserId(userService.currentUser().getId());
         commentRepository.save(newComment);
+        cacheService.cleanComments();
+        cacheService.cleanTopCommentsCache();
         LOGGER.info("In createComment: created comment: {}", comment);
     }
 
     public List<CommentDto> getAllComment(int idPost)
     {
-        List<Comment> commentListFromDB = commentRepository.findAllByPostIdOrderByCreatedDesc(idPost);
+        List<CommentDto> commentsCache = cacheService.getCommentsCache(idPost);
+        if (commentsCache != null)
+        {
+            return commentsCache;
+        }
+        List<Comment> commentsFromDb = commentRepository.findAllByPostIdOrderByCreatedDesc(idPost);
         List<CommentDto> allComments = new ArrayList<>();
-        for (Comment comment : commentListFromDB)
+        for (Comment comment : commentsFromDb)
         {
             CommentDto commentDto = new CommentDto();
             commentDto.setId(comment.getId());
@@ -57,6 +66,7 @@ public class CommentService
             commentDto.setLikes(comment.getLikes());
             allComments.add(commentDto);
         }
+        cacheService.addCommentsCache(idPost, allComments);
         return allComments;
     }
 
@@ -71,6 +81,7 @@ public class CommentService
         if (comment.getUserId() == userService.currentUser().getId())
         {
             commentRepository.deleteById(commentId);
+            cacheService.cleanComments();
             LOGGER.info("In delComment: delete comment: ID {}", commentId);
         }
         else
@@ -92,6 +103,7 @@ public class CommentService
         {
             oldComment.setComment(comment);
             commentRepository.save(oldComment);
+            cacheService.cleanComments();
             LOGGER.info("In updateComment: update comment:  {}", comment);
         }
         else
@@ -102,6 +114,11 @@ public class CommentService
 
     public List<CommentDto> getTopComments()
     {
+        List<CommentDto> topComments = cacheService.getTopCommentsCache();
+        if (!topComments.isEmpty())
+        {
+            return topComments;
+        }
         List<Comment> top10ByOrderByLikesDesc = commentRepository.findTop10ByOrderByLikesDesc();
         List<CommentDto> top10CommentsDto = new ArrayList<>();
         for (Comment comment : top10ByOrderByLikesDesc)
@@ -109,9 +126,9 @@ public class CommentService
             CommentDto commentDto = new CommentDto();
             commentDto.setId(comment.getId());
             commentDto.setAuthorComment(comment.getUser().getName());
-            if (comment.getComment().length() > 34)
+            if (comment.getComment().length() > 30)
             {
-                commentDto.setComment(comment.getComment().substring(0, 34) + "...");
+                commentDto.setComment(comment.getComment().substring(0, 30) + "…");
             }
             else
             {
@@ -123,6 +140,7 @@ public class CommentService
             commentDto.setLikes(comment.getLikes());
             top10CommentsDto.add(commentDto);
         }
+        cacheService.addTopCommentsCache(top10CommentsDto);
         return top10CommentsDto;
     }
 }
