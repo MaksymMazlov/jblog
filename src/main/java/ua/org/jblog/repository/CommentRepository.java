@@ -12,4 +12,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer>
     List<Comment> findAllByPostIdOrderByCreatedDesc(int idPost);
 
     Comment findById(int id);
+
+    List<Comment> findTop10ByOrderByLikesDesc();
 }

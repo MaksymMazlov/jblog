@@ -99,4 +99,30 @@ public class CommentService
             LOGGER.error("In updateComment: update comment is impossible!");
         }
     }
+
+    public List<CommentDto> getTopComments()
+    {
+        List<Comment> top10ByOrderByLikesDesc = commentRepository.findTop10ByOrderByLikesDesc();
+        List<CommentDto> top10CommentsDto = new ArrayList<>();
+        for (Comment comment : top10ByOrderByLikesDesc)
+        {
+            CommentDto commentDto = new CommentDto();
+            commentDto.setId(comment.getId());
+            commentDto.setAuthorComment(comment.getUser().getName());
+            if (comment.getComment().length() > 34)
+            {
+                commentDto.setComment(comment.getComment().substring(0, 34) + "...");
+            }
+            else
+            {
+                commentDto.setComment(comment.getComment());
+            }
+
+            commentDto.setCreated(comment.getCreated().format(DATE_TIME_FORMATTER));
+            commentDto.setPostId(comment.getPostId());
+            commentDto.setLikes(comment.getLikes());
+            top10CommentsDto.add(commentDto);
+        }
+        return top10CommentsDto;
+    }
 }

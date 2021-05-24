@@ -20,7 +20,7 @@
                         <h2 class="card-title">${post.title}</h2>
                         <img class="card-img-top" src="${post.img?no_esc}" alt="Card image cap">
                         <p class="card-text">${post.shortText?no_esc}</p>
-                        <a href="/post/${post.id}" class="btn btn-primary">Read More &rarr;</a>
+                        <a href="/post/${post.id?c}" class="btn btn-primary">Read More &rarr;</a>
                     </div>
                     <div class="card-footer text-muted">
                         Posted on ${post.created} : Category: ${post.categoryName} --- Views: ${post.views} |
@@ -45,13 +45,14 @@
         <div class="col-md-4">
 
             <!-- Search Widget -->
-            <#include "searchWidget.ftlh">
+            <#include "widgets/searchWidget.ftlh">
             <!-- Categories Widget -->
-            <#include "сategoriesWinget.ftlh">
+            <#include "widgets/сategoriesWidget.ftlh">
 
                        <!-- Top Widget -->
-            <#include "topWidget.ftlh">
-
+            <#include "widgets/topPostsWidget.ftlh">
+            <!-- Comments Widget -->
+            <#include "widgets/topCommentsWidget.ftlh">
         </div>
 
     </div>

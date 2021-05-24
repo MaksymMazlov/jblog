@@ -1,5 +1,5 @@
 <div class="card my-4">
-    <h5 class="card-header">Search</h5>
+    <h5 class="card-header">Пошук</h5>
     <div class="card-body">
         <form action="/search" method="get">
             <div class="input-group">

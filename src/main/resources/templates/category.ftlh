@@ -56,13 +56,15 @@
         <div class="col-md-4">
 
             <!-- Search Widget -->
-            <#include "searchWidget.ftlh">
+            <#include "widgets/searchWidget.ftlh">
             <!-- Categories Widget -->
-            <#include "сategoriesWinget.ftlh">
+           <#include "widgets/сategoriesWidget.ftlh">
 
-                       <!-- Top Widget -->
-            <#include "topWidget.ftlh">
+                <!-- Top Widget -->
+            <#include "widgets/topPostsWidget.ftlh">
 
+            <!-- Comments Widget -->
+            <#include "widgets/topCommentsWidget.ftlh">
         </div>
 
     </div>
