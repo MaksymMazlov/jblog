@@ -4,9 +4,10 @@
         <table>
             <#list topPost as post>
                 <tr>
-                    <td>${post_index+1}.</td>
+
+                    <td>${post_index+1}</td>
                     <td><a href="/post/${post.id?c}">${post.title}</a></td>
-                    <td>${post.views}</td>
+                    <td><span class="badge badge-success">${post.views}</span></td>
                 </tr>
             </#list>
         </table>

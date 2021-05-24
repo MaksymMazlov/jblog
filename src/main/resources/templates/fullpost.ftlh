@@ -57,16 +57,16 @@
                             <#if principal.name==comment.authorComment>
                                 <span class="float-right small">
                                         <a style="color: #a71d2a" title="Удалить комментарий"
-                                           href="/post/${post.id?c}/comments/${comment.id}/del">Удалить</a>
+                                           href="/post/${post.id?c}/comments/${comment.id?c}/del">Удалить</a>
 
                                           <a style="color: #28a745" title="Править комментарий" data-toggle="collapse"
-                                             href="#edit-${comment.id}" role="button" aria-expanded="false"
+                                             href="#edit-${comment.id?c}" role="button" aria-expanded="false"
                                              aria-controls="collapseExample">Править</a>
                                 </span>
 
-                                <div class="collapse" id="edit-${comment.id}">
+                                <div class="collapse" id="edit-${comment.id?c}">
                                     <div class="card card-body">
-                                        <form class="show" action="/post/${post.id?c}/comments/${comment.id}/edit"
+                                        <form class="show" action="/post/${post.id?c}/comments/${comment.id?c}/edit"
                                               method="post">
                                             <input class="form-control" name="comment" placeholder="${comment.comment}">
                                             <button class="btn btn-success" type="submit">Изменить</button>
@@ -97,13 +97,16 @@
         <div class="col-md-4">
 
             <!-- Search Widget -->
-            <#include "searchWidget.ftlh">
+            <#include "widgets/searchWidget.ftlh">
 
             <!-- Categories Widget -->
-            <#include "сategoriesWinget.ftlh">
+            <#include "widgets/сategoriesWidget.ftlh">
 
-                       <!-- Top Widget -->
-            <#include "topWidget.ftlh">
+           <!-- Top Widget -->
+            <#include "widgets/topPostsWidget.ftlh">
+
+            <!-- Comments Widget -->
+            <#include "widgets/topCommentsWidget.ftlh">
 
         </div>
 

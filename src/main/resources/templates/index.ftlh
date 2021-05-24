@@ -24,16 +24,19 @@
 
         </div>
 
-        <!-- Sidebar Widgets Column -->
+            <!-- Sidebar Widgets Column -->
         <div class="col-md-4">
             <!-- Search Widget -->
-            <#include "searchWidget.ftlh">
+            <#include "widgets/searchWidget.ftlh">
 
             <!-- Categories Widget -->
-            <#include "сategoriesWinget.ftlh">
+            <#include "widgets/сategoriesWidget.ftlh">
 
             <!-- Top Widget -->
-            <#include "topWidget.ftlh">
+            <#include "widgets/topPostsWidget.ftlh">
+
+            <!-- Comments Widget -->
+            <#include "widgets/topCommentsWidget.ftlh">
 
         </div>
 
@@ -54,7 +57,6 @@
 <!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>

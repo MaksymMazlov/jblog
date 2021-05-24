@@ -48,7 +48,7 @@
         <div class="col-md-4">
 
                        <!-- Top Widget -->
-            <#include "topWidget.ftlh">
+            <#include "widgets/topPostsWidget.ftlh">
 
         </div>
 
